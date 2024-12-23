@@ -1,4 +1,11 @@
 import re
+import sql
+import datetime
+
+# Get current date and time
+now = datetime.datetime.now()
+date = str(now.date())
+
 with open("html.txt", "r") as f:
     lines = f.readlines()
 
@@ -10,12 +17,10 @@ for line in lines:
     # Append the line to the array
     array.append(line.strip())  # .strip() removes trailing newlines
 count = 0
-# for i,line in enumerate(lines):
-#     match = re.search(r'xmlns="http://www.w3.org/2000/svg" aria-label="(Empty|Moon|Sun)"', line)
-#     if match:
-#         count+=1
-#         print(i, match[0])
+
 inputs = []
+
+# this assumes the format of the page doesn't change
 for i,line in enumerate(lines):
     match = re.search(r'data-cell-idx', line)
     if match:
@@ -30,11 +35,8 @@ for i, line in enumerate(inputs):
         inputs[i] = "M"
     elif "Sun" in line:
         inputs[i] = "S"
-print(inputs)
-grid = [[None]*6 for i in range(6)]
-for i, _ in enumerate(inputs):
-    grid[i//6][i%6] = inputs[i]
-for line in grid:
-    print(line)
-# print(count)
-# print(array)
+board = "".join(inputs)
+if len(board) == 36:
+    sql.insert(date,board)
+else:
+    print("Something is off.")
