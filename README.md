@@ -19,3 +19,10 @@ sql.py is a template for inserting into the database
 SELECT * FROM boards; // displays entire table
 SELECT * FROM boards WHERE date="?"; // queries for what u need
 ```
+
+## TODOS
+Perhaps find a better webscraper? works well once you get completely rendered HTML;
+
+Develop logic for actually solving the game;
+
+Finding a way to display all this info.
