@@ -18,7 +18,7 @@ import datetime
 now = datetime.datetime.now()
 date = str(now.date())
 
-with open("html.txt", "r") as f:
+with open("1224.txt", "r") as f:
     lines = f.readlines()
 
 # Create an empty array
