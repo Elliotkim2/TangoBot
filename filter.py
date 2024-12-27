@@ -1,6 +1,13 @@
 import re
 import sql
 import datetime
+import sys
+# Print all command-line arguments
+print("Arguments:", sys.argv)
+
+# Access individual arguments
+if len(sys.argv) != 2:
+    print("Usage python3 filter.py <html.txt>")
 # class TangoL:
 #     def __init__(self,x,y,string):
 #         self.x = x
@@ -18,7 +25,7 @@ import datetime
 now = datetime.datetime.now()
 date = str(now.date())
 
-with open("1224.txt", "r") as f:
+with open(sys.argv[1], "r") as f:
     lines = f.readlines()
 
 # Create an empty array
@@ -61,9 +68,9 @@ for i, line in enumerate(additionals):
             cell_idx = int(match.group(1))
         if "right" in line[0]:
             crosses.append((cell_idx,cell_idx+1))
-        if "left" in line[0]:
+        elif "left" in line[0]:
             crosses.append((cell_idx,cell_idx-1))
-        if "down" in line[0]:
+        elif "down" in line[0]:
             crosses.append((cell_idx,cell_idx+6))
         else:
             crosses.append((cell_idx,cell_idx-6))
@@ -73,18 +80,19 @@ for i, line in enumerate(additionals):
             cell_idx = int(match.group(1))
         if "right" in line[0]:
             equals.append((cell_idx,cell_idx+1))
-        if "left" in line[0]:
+        elif "left" in line[0]:
             equals.append((cell_idx,cell_idx-1))
-        if "down" in line[0]:
+        elif "down" in line[0]:
             equals.append((cell_idx,cell_idx+6))
         else:
             equals.append((cell_idx,cell_idx-6))
-        
-print(crosses)
-print(equals)
+
+# print(sql.listtostring(crosses))
+# print(sql.listtostring(equals))
 
 board = "".join(inputs)
+# print(board)
 if len(board) == 36:
-    sql.insert(date,board)
+    sql.insert(date,board,sql.listtostring(crosses),sql.listtostring(equals))
 else:
     print("Something is off.")

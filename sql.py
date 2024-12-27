@@ -12,7 +12,9 @@ def setup():
     CREATE TABLE IF NOT EXISTS Boards (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         date DATE NOT NULL,
-        board TEXT NOT NULL
+        board TEXT NOT NULL,
+        crosses TEXT NOT NULL,
+        equals TEXT NOT NULL
     );
     """)
     return connection, cursor
@@ -37,7 +39,24 @@ def arrtostring(grid):
             board+=c
     return board
 
-def insert(date, board):
+def listtostring(pairs):
+    string = ""
+    for i,j in pairs:
+        string+=(f'{i},{j};')
+    if string:
+        string=string[:-1]
+    return string
+
+def stringtolist(string):
+    pairs = []
+    string = ""
+    for i,j in pairs:
+        string+=(f'{i},{j};')
+    if string:
+        string=string[:-1]
+    return string
+
+def insert(date, board, crosses, equals):
     connection, cursor = setup()
     cursor.execute("""
     SELECT COUNT(*) FROM Boards WHERE date = ?;
@@ -49,9 +68,9 @@ def insert(date, board):
         return False
     
     cursor.execute("""
-    INSERT INTO Boards (date, board)
-    VALUES (?, ?);
-    """, (date,board))
+    INSERT INTO Boards (date, board, crosses, equals)
+    VALUES (?, ?, ?, ?);
+    """, (date,board,crosses,equals))
     cleanup(connection)
     return True
 
@@ -71,7 +90,8 @@ def get(date):
     return results[0]
 
 if __name__ == "__main__":
+    pass
     # insert("2024-12-23", "EEEEEEEMEEEESMSEMEESEMSSEEEEMEEEEEEE")
-    # print(get("2024-12-23"))
-    print(stringtoarr("EEEEEEEMEEEESMSEMEESEMSSEEEEMEEEEEEE"))
-    print(arrtostring(stringtoarr("EEEEEEEMEEEESMSEMEESEMSSEEEEMEEEEEEE")))
+    print(get("2024-12-23"))
+    # print(stringtoarr("EEEEEEEMEEEESMSEMEESEMSSEEEEMEEEEEEE"))
+    # print(arrtostring(stringtoarr("EEEEEEEMEEEESMSEMEESEMSSEEEEMEEEEEEE")))
