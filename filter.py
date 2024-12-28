@@ -2,12 +2,11 @@ import re
 import sql
 import datetime
 import sys
-# Print all command-line arguments
-print("Arguments:", sys.argv)
 
-# Access individual arguments
+
 if len(sys.argv) != 2:
     print("Usage python3 filter.py <html.txt>")
+    exit()
 # class TangoL:
 #     def __init__(self,x,y,string):
 #         self.x = x
@@ -91,6 +90,7 @@ for i, line in enumerate(additionals):
 # print(sql.listtostring(equals))
 
 board = "".join(inputs)
+
 # print(board)
 if len(board) == 36:
     sql.insert(date,board,sql.listtostring(crosses),sql.listtostring(equals))
