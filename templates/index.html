@@ -5,11 +5,191 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .outer-shell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(6, 1fr);
+      aspect-ratio: 1;
+    }
+
+    .cell {
+      border: 1px black solid;
+      height: 4rem;
+      width: 4rem;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .cell-content {
+      height: 4rem;
+      width: 4rem;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      position: absolute;
+      z-index: 2;
+    }
+
+    .cell-down,
+    .cell-right {
+      height: 4rem;
+      width: 4rem;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      position: absolute;
+      z-index: 1;
+
+      opacity: 1;
+    }
+
+    .cell-down {
+      transform: translateY(2rem);
+    }
+
+    .cell-right {
+      transform: translateX(2rem);
+    }
+
+    .lotka-edge-sign-path {
+      fill: black;
+    }
+
+    .lotka-edge-background-path {
+      fill: white;
+    }
+
+    .lotka-cell-zero-path {
+      fill: #ffb31e;
+      stroke: #cb6c2f;
+    }
+
+    .lotka-cell-one-path {
+      fill: #4c8ce6;
+      stroke: #1855aa;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>My First Heading</h1>
-  <p>My first paragraph.</p>
+  <div class="outer-shell">
+    <h1>Tango Board</h1>
+    <div>
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none" aria-label="Cross">
+        <path class="lotka-edge-background-path"
+          d="M0.5 4C0.5 2.11438 0.5 1.17157 1.08579 0.585786C1.67157 0 2.61438 0 4.5 0H14.5C16.3856 0 17.3284 0 17.9142 0.585786C18.5 1.17157 18.5 2.11438 18.5 4V14C18.5 15.8856 18.5 16.8284 17.9142 17.4142C17.3284 18 16.3856 18 14.5 18H4.5C2.61438 18 1.67157 18 1.08579 17.4142C0.5 16.8284 0.5 15.8856 0.5 14V4Z">
+        </path>
+        <path class="lotka-edge-sign-path"
+          d="M13.475 5.025C13.1851 4.73505 12.7149 4.73505 12.425 5.025L10.0303 7.41967C9.73744 7.71256 9.26256 7.71256 8.96967 7.41967L6.575 5.025C6.28505 4.73505 5.81495 4.73505 5.525 5.025C5.23505 5.31495 5.23505 5.78505 5.525 6.075L7.91967 8.46967C8.21256 8.76256 8.21256 9.23744 7.91967 9.53033L5.525 11.925C5.23505 12.215 5.23505 12.6851 5.525 12.975C5.81495 13.2649 6.28505 13.2649 6.575 12.975L8.96967 10.5803C9.26256 10.2874 9.73744 10.2874 10.0303 10.5803L12.425 12.975C12.715 13.2649 13.1851 13.2649 13.475 12.975C13.7649 12.6851 13.7649 12.2149 13.475 11.925L11.0803 9.53033C10.7874 9.23744 10.7874 8.76256 11.0803 8.46967L13.475 6.075C13.7649 5.78505 13.7649 5.31495 13.475 5.025Z">
+        </path>
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-label="Equal">
+        <path class="lotka-edge-background-path"
+          d="M0 4C0 2.11438 0 1.17157 0.585786 0.585786C1.17157 0 2.11438 0 4 0H14C15.8856 0 16.8284 0 17.4142 0.585786C18 1.17157 18 2.11438 18 4V14C18 15.8856 18 16.8284 17.4142 17.4142C16.8284 18 15.8856 18 14 18H4C2.11438 18 1.17157 18 0.585786 17.4142C0 16.8284 0 15.8856 0 14V4Z">
+        </path>
+        <path class="lotka-edge-sign-path" id="="
+          d="M14.2538 11.6474C14.2538 12.1183 13.8721 12.5001 13.4012 12.5001H4.85264C4.38174 12.5001 4 12.1183 4 11.6474C4 11.1765 4.38174 10.7948 4.85264 10.7948H13.4012C13.8721 10.7948 14.2538 11.1765 14.2538 11.6474ZM14.2538 6.8527C14.2538 7.3236 13.8721 7.70534 13.4012 7.70534H4.85264C4.38174 7.70534 4 7.3236 4 6.8527C4 6.3818 4.38174 6.00006 4.85264 6.00006H13.4012C13.8721 6.00006 14.2538 6.3818 14.2538 6.8527Z">
+        </path>
+      </svg>
+    </div>
+    <div class="grid">
+      <div class="cell">
+        <div class="cell-content"><svg width="31" height="31" viewBox="0 0 31 31" fill="none"
+            xmlns="http://www.w3.org/2000/svg" aria-label="Sun" class="lotka-cell-content-img
+        fade-in
+        ">
+            <g id="Sun">
+              <path class="lotka-cell-zero-path" id="Vector"
+                d="M29.25 15.4989C29.25 23.0943 23.0937 29.25 15.5 29.25C7.90629 29.25 1.75 23.0943 1.75 15.4989C1.75 7.90583 7.90619 1.75 15.5 1.75C23.0938 1.75 29.25 7.90583 29.25 15.4989Z"
+                stroke-width="2"></path>
+            </g>
+          </svg></div>
+        <div class="cell-right"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18"
+            fill="none" aria-label="Cross">
+            <path class="lotka-edge-background-path"
+              d="M0.5 4C0.5 2.11438 0.5 1.17157 1.08579 0.585786C1.67157 0 2.61438 0 4.5 0H14.5C16.3856 0 17.3284 0 17.9142 0.585786C18.5 1.17157 18.5 2.11438 18.5 4V14C18.5 15.8856 18.5 16.8284 17.9142 17.4142C17.3284 18 16.3856 18 14.5 18H4.5C2.61438 18 1.67157 18 1.08579 17.4142C0.5 16.8284 0.5 15.8856 0.5 14V4Z">
+            </path>
+            <path class="lotka-edge-sign-path"
+              d="M13.475 5.025C13.1851 4.73505 12.7149 4.73505 12.425 5.025L10.0303 7.41967C9.73744 7.71256 9.26256 7.71256 8.96967 7.41967L6.575 5.025C6.28505 4.73505 5.81495 4.73505 5.525 5.025C5.23505 5.31495 5.23505 5.78505 5.525 6.075L7.91967 8.46967C8.21256 8.76256 8.21256 9.23744 7.91967 9.53033L5.525 11.925C5.23505 12.215 5.23505 12.6851 5.525 12.975C5.81495 13.2649 6.28505 13.2649 6.575 12.975L8.96967 10.5803C9.26256 10.2874 9.73744 10.2874 10.0303 10.5803L12.425 12.975C12.715 13.2649 13.1851 13.2649 13.475 12.975C13.7649 12.6851 13.7649 12.2149 13.475 11.925L11.0803 9.53033C10.7874 9.23744 10.7874 8.76256 11.0803 8.46967L13.475 6.075C13.7649 5.78505 13.7649 5.31495 13.475 5.025Z">
+            </path>
+          </svg></div>
+        <div class="cell-down"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18"
+            fill="none" aria-label="Cross">
+            <path class="lotka-edge-background-path"
+              d="M0.5 4C0.5 2.11438 0.5 1.17157 1.08579 0.585786C1.67157 0 2.61438 0 4.5 0H14.5C16.3856 0 17.3284 0 17.9142 0.585786C18.5 1.17157 18.5 2.11438 18.5 4V14C18.5 15.8856 18.5 16.8284 17.9142 17.4142C17.3284 18 16.3856 18 14.5 18H4.5C2.61438 18 1.67157 18 1.08579 17.4142C0.5 16.8284 0.5 15.8856 0.5 14V4Z">
+            </path>
+            <path class="lotka-edge-sign-path"
+              d="M13.475 5.025C13.1851 4.73505 12.7149 4.73505 12.425 5.025L10.0303 7.41967C9.73744 7.71256 9.26256 7.71256 8.96967 7.41967L6.575 5.025C6.28505 4.73505 5.81495 4.73505 5.525 5.025C5.23505 5.31495 5.23505 5.78505 5.525 6.075L7.91967 8.46967C8.21256 8.76256 8.21256 9.23744 7.91967 9.53033L5.525 11.925C5.23505 12.215 5.23505 12.6851 5.525 12.975C5.81495 13.2649 6.28505 13.2649 6.575 12.975L8.96967 10.5803C9.26256 10.2874 9.73744 10.2874 10.0303 10.5803L12.425 12.975C12.715 13.2649 13.1851 13.2649 13.475 12.975C13.7649 12.6851 13.7649 12.2149 13.475 11.925L11.0803 9.53033C10.7874 9.23744 10.7874 8.76256 11.0803 8.46967L13.475 6.075C13.7649 5.78505 13.7649 5.31495 13.475 5.025Z">
+            </path>
+          </svg></div>
+      </div>
+      <div class="cell"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"
+          aria-label="Moon" class="lotka-cell-content-img
+                
+        ">
+          <g id="Moon">
+            <g clip-path="url(#clip0_3574_67936)">
+              <path class="lotka-cell-one-path" id="Subtract"
+                d="M8.10583 19.9024C15.2282 18.6466 19.2619 11.9868 17.0757 5.09295C16.8785 4.47115 16.6376 3.86915 16.3574 3.28957C16.3507 3.27584 16.3467 3.26256 16.3446 3.24986C20.5748 4.17473 24.0337 7.5648 24.8316 12.0899C25.8865 18.0727 21.8917 23.778 15.9088 24.8329C11.4675 25.616 7.17692 23.6165 4.82974 20.0826C4.84051 20.0805 4.85231 20.0796 4.86526 20.0804C5.93904 20.1476 7.02621 20.0928 8.10583 19.9024Z"
+                stroke-width="2"></path>
+              <circle id="Cut" cx="12" cy="12" r="12"
+                transform="matrix(0.984808 -0.173648 0.302281 0.953219 -11.1387 -1.87585)"></circle>
+            </g>
+          </g>
+          <defs>
+            <clipPath id="clip0_3574_67936">
+              <rect x="0.0976562" y="4.26611" width="24" height="24" rx="12" transform="rotate(-10 0.0976562 4.26611)"
+                fill="white"></rect>
+            </clipPath>
+          </defs>
+        </svg></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+  </div>
+
 </body>
 
 </html>

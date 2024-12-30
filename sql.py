@@ -1,5 +1,5 @@
 import sqlite3
-
+from collections import defaultdict
 def setup():
     # Connect to the database (or create it if it doesn't exist)
     connection = sqlite3.connect("boards.db")
@@ -49,12 +49,18 @@ def listtostring(pairs):
 
 def stringtolist(string):
     pairs = []
-    string = ""
-    for i,j in pairs:
-        string+=(f'{i},{j};')
-    if string:
-        string=string[:-1]
-    return string
+    temp = string.split(";")
+    for pair in temp:
+        a,b=pair.split(",")
+        pairs.append((int(a),int(b)))
+    return pairs
+
+def listtoadjlist(pairs):
+    adj = [[] for i in range(36)]
+    for a,b in pairs:
+        adj[a].append(b)
+        adj[b].append(a)
+    return adj
 
 def insert(date, board, crosses, equals):
     connection, cursor = setup()
@@ -92,6 +98,14 @@ def get(date):
 if __name__ == "__main__":
     pass
     # insert("2024-12-23", "EEEEEEEMEEEESMSEMEESEMSSEEEEMEEEEEEE")
-    print(get("2024-12-23"))
+    board = get("2024-12-23")
+    print(board)
+    for c in board[2]:
+        print(f'"{c}",',end=" ")
+    print()
+    print()
+    print(listtoadjlist(stringtolist(board[3])))
+    print()
+    print(listtoadjlist(stringtolist(board[4])))
     # print(stringtoarr("EEEEEEEMEEEESMSEMEESEMSSEEEEMEEEEEEE"))
     # print(arrtostring(stringtoarr("EEEEEEEMEEEESMSEMEESEMSSEEEEMEEEEEEE")))

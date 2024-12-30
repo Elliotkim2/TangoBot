@@ -1,0 +1,17 @@
+.lotka-edge-sign-path {
+  fill: var(--contrast-color);
+}
+
+.lotka-edge-background-path {
+  fill: var(--background-color);
+}
+
+.lotka-cell-zero-path {
+  fill: var(--sun-fill-color);
+  stroke: var(--sun-stroke-color);
+}
+
+.lotka-cell-one-path {
+  fill: var(--moon-fill-color);
+  stroke: var(--moon-stroke-color);
+}
