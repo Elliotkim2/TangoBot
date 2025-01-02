@@ -27,3 +27,9 @@ jobs:
     - name: Run Python script
       working-directory: ./webscrape
       run: python3 print.py
+
+    - name: Upload hello_world.txt as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: hello-world-file
+        path: ./webscrape/hello_world.txt
