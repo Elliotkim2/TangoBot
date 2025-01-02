@@ -24,8 +24,8 @@ class TangoBoard:
 def filter(lines):
  
     # Get current date and time
-    now = datetime.datetime.now()
-    date = str(now.date())
+    now_utc = datetime.datetime.utcnow()
+    date = str(now_utc.date())
 
     count = 0
 
@@ -86,15 +86,15 @@ def filter(lines):
         grid[i//6][i%6] = board[i]
     
     currentBoard = TangoBoard(grid, crosses, equals)
-    # print(sql.listtostring(crosses))
-    # print(sql.listtostring(equals))
+
     json_data = json.dumps(currentBoard.to_dict())
     
 
     # print(board)
     if len(board) == 36:
-        # print(currentBoard)
-        sql.insert(date,json_data)
+
+        # sql.insert(date,json_data)
+        print(date,json_data)
         with open("log.txt", "a") as file:
             file.write(date)
             file.write(json_data)
