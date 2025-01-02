@@ -96,4 +96,4 @@ def filter(lines):
         # print(currentBoard)
         sql.insert(date,json_data)
     else:
-        print("Error in parsing Board.")
+        raise Exception("Error in parsing Board.")
