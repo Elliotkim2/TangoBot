@@ -95,5 +95,8 @@ def filter(lines):
     if len(board) == 36:
         # print(currentBoard)
         sql.insert(date,json_data)
+        with open("log.txt", "a") as file:
+            file.write(date)
+            file.write(json_data)
     else:
         raise Exception("Error in parsing Board.")
