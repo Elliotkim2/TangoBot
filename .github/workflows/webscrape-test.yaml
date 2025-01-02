@@ -1,13 +1,13 @@
 name: Test Python Script on Push
 
 on:
-  push:
-    branches:
-      - main  # Trigger on pushes to the main branch
+  # push:
+  #   branches:
+  #     - main  # Trigger on pushes to the main branch
 
 jobs:
   test-script:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout repository
@@ -28,8 +28,16 @@ jobs:
       working-directory: ./webscrape
       run: python3 print.py
 
-    - name: Upload hello_world.txt as artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: hello-world-file
-        path: ./webscrape/hello_world.txt
+    - name: Configure Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+
+    - name: Push hello_world.txt to repository
+      working-directory: ./webscrape
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git add hello_world.txt
+        git commit -m "Add hello_world.txt from workflow"
+        git push origin main

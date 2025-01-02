@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright
 def scrape():
     with sync_playwright() as p:
         # Launch the browser
-        browser = p.chromium.launch(headless=False)  # Set headless=True for no UI
+        browser = p.chromium.launch(headless=True)  # Set headless=True for no UI
         page = browser.new_page()
 
         # Navigate to the webpage
@@ -13,7 +13,7 @@ def scrape():
         page.goto(url)
 
         # Wait for 5 seconds to let the page load fully
-        time.sleep(5)
+        time.sleep(2)
 
         # Get the generated HTML after JavaScript execution
         generated_html = page.content()
