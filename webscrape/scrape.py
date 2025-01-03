@@ -12,7 +12,7 @@ def scrape():
         url = "https://www.linkedin.com/games/view/tango/desktop"
         page.goto(url)
 
-        # Wait for 5 seconds to let the page load fully
+        # Wait for 2 seconds to let the page load fully
         time.sleep(2)
 
         # Get the generated HTML after JavaScript execution

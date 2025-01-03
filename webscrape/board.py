@@ -20,6 +20,12 @@ class TangoBoard:
             "equals": self.equals
         }
 
+def pairstolist(pairs):
+    a = [[] for _ in range(36)]
+    for i,j in pairs:
+        a[i].append(j)
+        a[j].append(i)
+    return a
 
 def filter(lines):
  
@@ -80,18 +86,20 @@ def filter(lines):
                 equals.append((cell_idx,cell_idx+6))
             else:
                 equals.append((cell_idx,cell_idx-6))
-    board = "".join(inputs)
-    grid = [[None]*6 for i in range(6)]
-    for i, _ in enumerate(board):
-        grid[i//6][i%6] = board[i]
-    
-    currentBoard = TangoBoard(grid, crosses, equals)
+    # board = "".join(inputs)
+    # grid = [[None]*6 for i in range(6)]
+    # for i, _ in enumerate(board):
+    #     grid[i//6][i%6] = board[i]
+
+    crosses = pairstolist(crosses)
+    equals = pairstolist(equals)
+    currentBoard = TangoBoard(inputs, crosses, equals)
 
     json_data = json.dumps(currentBoard.to_dict())
     
 
     # print(board)
-    if len(board) == 36:
+    if len(inputs) == 36:
 
         # sql.insert(date,json_data)
         print(date,json_data)

@@ -1,7 +1,7 @@
 import './App.css'
 // import Cell from './components/Cell.tsx';
 import Grid from './components/Grid.tsx';
-import { board } from './boards/2024-12-23.ts';
+import { board } from './boards/2025-01-03.ts';
 function App() {
   // console.log(board);
   return (
