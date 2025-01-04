@@ -8,6 +8,7 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-22.04
+    if: false 
 
     steps:
     - name: Checkout repository
