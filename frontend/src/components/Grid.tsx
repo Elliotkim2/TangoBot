@@ -1,8 +1,6 @@
 import Cell from './Cell.tsx';
 import './Grid.css';
 const Grid = (props: { board: { grid: string[], crosses: number[][], equals: number[][] } }) => {
-  console.log(props.board.crosses);
-  console.log(props.board.equals);
   return (
     <div className="outer-shell">
       <h1>Tango Board</h1>
@@ -24,7 +22,6 @@ const Grid = (props: { board: { grid: string[], crosses: number[][], equals: num
           if ((props.board.equals[i]).length > 0) {
             rightequals = props.board.equals[i].map((d) => (d === i + 1)).reduce((a, b) => a || b, false)
           }
-
           return (
             <Cell
               key={i}

@@ -14,16 +14,16 @@ const Cell = (props: { icon: string, down: string, right: string }) => {
         {props.icon === "M" && <Moon />}
         {props.icon === "E" && <Empty />}
       </div>
-      {props.down === "Equal" && <div className="cell-down">
+      {props.down === "equals" && <div className="cell-down">
         <Equal />
       </div>}
-      {props.down === "Cross" && <div className="cell-down">
+      {props.down === "crosses" && <div className="cell-down">
         <Cross />
       </div>}
-      {props.right === "Equal" && <div className="cell-right">
+      {props.right === "equals" && <div className="cell-right">
         <Equal />
       </div>}
-      {props.right === "Cross" && <div className="cell-right">
+      {props.right === "crosses" && <div className="cell-right">
         <Cross />
       </div>}
 
