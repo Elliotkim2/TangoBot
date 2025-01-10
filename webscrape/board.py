@@ -37,7 +37,7 @@ def filter(lines):
 
     count = 0
 
-    inputs = []
+    cells = []
     equals = []
     crosses = []
 
@@ -49,19 +49,19 @@ def filter(lines):
         if match:
             count+=1
             # print(i, match[0])
-            inputs.append(lines[i+5])
+            cells.append(lines[i+5])
             # print(i+5, lines[i+5])
             
         if match1:
             additionals.append((lines[i],lines[i+1],lines[i-10]))
     
-    for i, line in enumerate(inputs):
+    for i, line in enumerate(cells):
         if "empty" in line:
-            inputs[i] = "E"
+            cells[i] = "E"
         elif "Moon" in line: 
-            inputs[i] = "M"
+            cells[i] = "M"
         elif "Sun" in line:
-            inputs[i] = "S"
+            cells[i] = "S"
 
     for i, line in enumerate(additionals):
         if "Cross" in line[1]:
@@ -91,9 +91,9 @@ def filter(lines):
 
     crosses = pairstolist(crosses)
     equals = pairstolist(equals)
-    currentBoard = TangoBoard(inputs, crosses, equals, date)
+    currentBoard = TangoBoard(cells, crosses, equals, date)
 
-    if len(inputs) == 36:
+    if len(cells) == 36:
         mongodb.insert(currentBoard.to_dict())
     else:
         raise Exception("Error in parsing Board.")
