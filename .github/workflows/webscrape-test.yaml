@@ -24,16 +24,16 @@ jobs:
         pip install pymongo
         pip install python-dotenv
 
-    - name: Validate MONGODB_URI Secret
+    - name: Validate MONGO_URI Secret
       run: |
-        if [ -z "$MONGODB_URI" ]; then
-          echo "MONGODB_URI is not set or is empty."
+        if [ -z "$MONGO_URI" ]; then
+          echo "MONGO_URI is not set or is empty."
           exit 1
         else
-          echo "MONGODB_URI is set."
+          echo "MONGO_URI is set."
         fi
       env:
-        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        MONGODB_URI: ${{ secrets.MONGO_URI }}
     
 
     - name: Run Python script
