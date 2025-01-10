@@ -33,7 +33,7 @@ jobs:
           echo "ARINWANG is set."
         fi
       env:
-        MONGODB_URI: ${{ secrets.MONGO_URI }}
+        ARINWANG: ${{ secrets.ARINWANG }}
 
     - name: Validate MONGO_URI Secret
       run: |
