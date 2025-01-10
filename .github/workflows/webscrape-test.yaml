@@ -1,4 +1,4 @@
-name: Test Python Script on Push
+name: Test Python On Push
 
 on:
   push:
@@ -6,9 +6,8 @@ on:
       - main  # Trigger on pushes to the main branch
 
 jobs:
-  test-script:
+  run-script:
     runs-on: ubuntu-22.04
-    if: false 
 
     steps:
     - name: Checkout repository
@@ -22,25 +21,13 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install playwright
-        playwright install
         pip install pymongo
         pip install python-dotenv
+    
+    - name: Create .env file
+      run: |
+        echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
 
     - name: Run Python script
       working-directory: ./webscrape
-      run: python3 print.py
-
-    - name: Configure Git
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-
-    - name: Push hello_world.txt to repository
-      working-directory: ./webscrape
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        git add hello_world.txt
-        git commit -m "Add hello_world.txt from workflow"
-        git push origin main
+      run: python mondgodb.py
