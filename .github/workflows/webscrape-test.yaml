@@ -51,4 +51,6 @@ jobs:
 
     - name: Run Python script
       working-directory: ./webscrape
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
       run: python mongodb.py
