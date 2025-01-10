@@ -3,21 +3,24 @@ import sql
 import datetime
 import sys
 import json
+import mongodb
 
 class TangoBoard:
-    def __init__(self, grid, crosses, equals):
+    def __init__(self, grid, crosses, equals, date):
         self.grid = grid
         self.crosses = crosses
         self.equals = equals
+        self.date = date
 
     def __str__(self):
-        return f"TangoBoard(grid={self.grid}, crosses={self.crosses}, equals={self.equals})"
+        return f"TangoBoard(grid={self.grid}, crosses={self.crosses}, equals={self.equals}, date={self.date})"
 
     def to_dict(self):
         return {
             "grid": self.grid,
             "crosses": self.crosses,
-            "equals": self.equals
+            "equals": self.equals,
+            "date": self.date
         }
 
 def pairstolist(pairs):
@@ -93,18 +96,19 @@ def filter(lines):
 
     crosses = pairstolist(crosses)
     equals = pairstolist(equals)
-    currentBoard = TangoBoard(inputs, crosses, equals)
+    currentBoard = TangoBoard(inputs, crosses, equals, date)
 
-    json_data = json.dumps(currentBoard.to_dict())
+    # json_data = json.dumps(currentBoard.to_dict())
     
 
     # print(board)
     if len(inputs) == 36:
-
+        mongodb.insert(currentBoard.to_dict())
+        # mongodb.insert(currentBoard)
         # sql.insert(date,json_data)
-        print(date,json_data)
-        with open("log.txt", "a") as file:
-            file.write(date)
-            file.write(json_data)
+        # print(date,json_data)
+        # with open("log.txt", "a") as file:
+        #     file.write(date)
+        #     file.write(json_data)
     else:
         raise Exception("Error in parsing Board.")

@@ -22,6 +22,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install playwright
         playwright install
+        
+    - name: Create .env file
+      run: |
+        echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
 
     - name: Run Python script
       working-directory: ./webscrape
