@@ -16,8 +16,9 @@ import json
 
 def setup():
   load_dotenv()
-  value = os.environ.get("MONGO_URI")
   print(value[-30:])
+  value = os.environ.get("MONGO_URI")
+  
 
   client = MongoClient(value) # Connect to MongoDB
   return client
