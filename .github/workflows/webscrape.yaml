@@ -33,8 +33,8 @@ jobs:
       working-directory: ./webscrape
       run: python all.py
 
-    - name: Upload log.txt as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: log-file
-        path: ./webscrape/log.txt
+    # - name: Upload log.txt as artifact
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: log-file
+    #     path: ./webscrape/log.txt
