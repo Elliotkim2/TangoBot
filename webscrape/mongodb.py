@@ -15,10 +15,9 @@ import json
 #     print(doc)
 
 def setup():
-  load_dotenv()
-  print(value[-30:])
+  load_dotenv() 
   value = os.environ.get("MONGO_URI")
-  
+  print(value[-30:])
 
   client = MongoClient(value) # Connect to MongoDB
   return client
@@ -32,8 +31,12 @@ def insert(document):
   collection = db["Boards"] # Access a collection
   result = collection.insert_one(document)
   print("Inserted document ID:", result.inserted_id)
+  close()
 
 if __name__=="__main__":
-  insert({"a":1,"b":2,"c":3})
+  load_dotenv() 
+  value = os.environ.get("MONGO_URI")
+  print(value[-30:])
+  # insert({"a":1,"b":2,"c":3})
   
 
