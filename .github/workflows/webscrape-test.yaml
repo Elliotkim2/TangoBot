@@ -23,10 +23,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install pymongo
         pip install python-dotenv
-    
-    - name: Create .env file
+
+    - name: Validate MONGODB_URI Secret
       run: |
-        echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
+        if [ -z "$MONGODB_URI" ]; then
+          echo "MONGODB_URI is not set or is empty."
+          exit 1
+        else
+          echo "MONGODB_URI is set."
+        fi
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+    
 
     - name: Run Python script
       working-directory: ./webscrape
