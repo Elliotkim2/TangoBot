@@ -44,7 +44,7 @@ jobs:
           echo "MONGO_URI is set."
         fi
       env:
-        MONGODB_URI: ${{ secrets.MONGO_URI }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
 
     
     
