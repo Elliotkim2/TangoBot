@@ -1,5 +1,4 @@
 import re
-import sql
 import datetime
 import sys
 import json
@@ -89,26 +88,12 @@ def filter(lines):
                 equals.append((cell_idx,cell_idx+6))
             else:
                 equals.append((cell_idx,cell_idx-6))
-    # board = "".join(inputs)
-    # grid = [[None]*6 for i in range(6)]
-    # for i, _ in enumerate(board):
-    #     grid[i//6][i%6] = board[i]
 
     crosses = pairstolist(crosses)
     equals = pairstolist(equals)
     currentBoard = TangoBoard(inputs, crosses, equals, date)
 
-    # json_data = json.dumps(currentBoard.to_dict())
-    
-
-    # print(board)
     if len(inputs) == 36:
         mongodb.insert(currentBoard.to_dict())
-        # mongodb.insert(currentBoard)
-        # sql.insert(date,json_data)
-        # print(date,json_data)
-        # with open("log.txt", "a") as file:
-        #     file.write(date)
-        #     file.write(json_data)
     else:
         raise Exception("Error in parsing Board.")

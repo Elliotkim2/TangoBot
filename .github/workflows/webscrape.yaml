@@ -2,7 +2,7 @@ name: Run Python Script Daily
 
 on:
   schedule:
-    - cron: '5 8 * * *' # Runs daily at 8:05 am UTC Linkedin updates midnight PST -> 8:00 UTC
+    - cron: '0 8 * * *' # Runs daily at 8:00 am UTC Linkedin updates midnight PST -> 8:00 UTC
 
 jobs:
   run-script:
@@ -25,16 +25,9 @@ jobs:
         pip install pymongo
         pip install python-dotenv
 
-    - name: Create .env file
-      run: |
-        echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > .env
-
     - name: Run Python script
       working-directory: ./webscrape
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
       run: python all.py
 
-    # - name: Upload log.txt as artifact
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: log-file
-    #     path: ./webscrape/log.txt
