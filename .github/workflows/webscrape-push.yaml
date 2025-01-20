@@ -8,7 +8,7 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-22.04
-    if: false 
+    if: false
 
     steps:
     - name: Checkout repository
@@ -24,13 +24,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install playwright
         playwright install
-
+        pip install pymongo
+        pip install python-dotenv
+    
     - name: Run Python script
       working-directory: ./webscrape
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
       run: python all.py
-
-    - name: Upload log.txt as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: log-file
-        path: ./webscrape/log.txt

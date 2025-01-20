@@ -1,4 +1,4 @@
-name: Test Python Script on Push
+name: Test Python On Push
 
 on:
   push:
@@ -6,9 +6,9 @@ on:
       - main  # Trigger on pushes to the main branch
 
 jobs:
-  test-script:
+  run-script:
     runs-on: ubuntu-22.04
-    if: false 
+    if: false
 
     steps:
     - name: Checkout repository
@@ -22,23 +22,36 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install playwright
-        playwright install
+        pip install pymongo
+        pip install python-dotenv
+
+    - name: Validate ARINWANG Secret
+      run: |
+        if [ -z "$ARINWANG" ]; then
+          echo "ARINWANG is not set or is empty."
+          exit 1
+        else
+          echo "ARINWANG is set."
+        fi
+      env:
+        ARINWANG: ${{ secrets.ARINWANG }}
+
+    - name: Validate MONGO_URI Secret
+      run: |
+        if [ -z "$MONGO_URI" ]; then
+          echo "MONGO_URI is not set or is empty."
+          exit 1
+        else
+          echo "MONGO_URI is set."
+        fi
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+
+    
+    
 
     - name: Run Python script
       working-directory: ./webscrape
-      run: python3 print.py
-
-    - name: Configure Git
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-
-    - name: Push hello_world.txt to repository
-      working-directory: ./webscrape
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        git add hello_world.txt
-        git commit -m "Add hello_world.txt from workflow"
-        git push origin main
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+      run: python mongodb.py

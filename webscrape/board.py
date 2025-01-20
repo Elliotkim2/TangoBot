@@ -1,23 +1,25 @@
 import re
-import sql
 import datetime
 import sys
 import json
+import mongodb
 
 class TangoBoard:
-    def __init__(self, grid, crosses, equals):
+    def __init__(self, grid, crosses, equals, date):
         self.grid = grid
         self.crosses = crosses
         self.equals = equals
+        self.date = date
 
     def __str__(self):
-        return f"TangoBoard(grid={self.grid}, crosses={self.crosses}, equals={self.equals})"
+        return f"TangoBoard(grid={self.grid}, crosses={self.crosses}, equals={self.equals}, date={self.date})"
 
     def to_dict(self):
         return {
             "grid": self.grid,
             "crosses": self.crosses,
-            "equals": self.equals
+            "equals": self.equals,
+            "date": self.date
         }
     def complete(self):
         for row in self.grid:
@@ -62,7 +64,7 @@ def filter(lines):
 
     count = 0
 
-    inputs = []
+    cells = []
     equals = []
     crosses = []
 
@@ -74,19 +76,19 @@ def filter(lines):
         if match:
             count+=1
             # print(i, match[0])
-            inputs.append(lines[i+5])
+            cells.append(lines[i+5])
             # print(i+5, lines[i+5])
             
         if match1:
             additionals.append((lines[i],lines[i+1],lines[i-10]))
     
-    for i, line in enumerate(inputs):
+    for i, line in enumerate(cells):
         if "empty" in line:
-            inputs[i] = "E"
+            cells[i] = "E"
         elif "Moon" in line: 
-            inputs[i] = "M"
+            cells[i] = "M"
         elif "Sun" in line:
-            inputs[i] = "S"
+            cells[i] = "S"
 
     for i, line in enumerate(additionals):
         if "Cross" in line[1]:
@@ -113,25 +115,12 @@ def filter(lines):
                 equals.append((cell_idx,cell_idx+6))
             else:
                 equals.append((cell_idx,cell_idx-6))
-    # board = "".join(inputs)
-    # grid = [[None]*6 for i in range(6)]
-    # for i, _ in enumerate(board):
-    #     grid[i//6][i%6] = board[i]
 
     crosses = pairstolist(crosses)
     equals = pairstolist(equals)
-    currentBoard = TangoBoard(inputs, crosses, equals)
+    currentBoard = TangoBoard(cells, crosses, equals, date)
 
-    json_data = json.dumps(currentBoard.to_dict())
-    
-
-    # print(board)
-    if len(inputs) == 36:
-
-        # sql.insert(date,json_data)
-        print(date,json_data)
-        with open("log.txt", "a") as file:
-            file.write(date)
-            file.write(json_data)
+    if len(cells) == 36:
+        mongodb.insert(currentBoard.to_dict())
     else:
         raise Exception("Error in parsing Board.")
