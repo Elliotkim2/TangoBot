@@ -19,6 +19,33 @@ class TangoBoard:
             "crosses": self.crosses,
             "equals": self.equals
         }
+    def complete(self):
+        for row in self.grid:
+            if "E" in row:
+                return False
+        return True
+    def get_column(self, col):
+        columns = []
+        for row in self.grid:
+            columns.append(row[col])
+        return columns
+    def get_row_count(self, letter,row):
+        count = 0
+        for ele in self.grid[row]:
+            if ele == letter:
+                count+=1
+        return count
+    def get_col_count(self,letter,col):
+        count = 0
+        for row in self.grid:
+            if row[col] == letter:
+                count+=1
+        return count 
+    def update_grid(self,grid):
+        self.grid = grid
+    def print_board(self):
+        return f"TangoBoard(grid={self.grid}"
+
 
 def pairstolist(pairs):
     a = [[] for _ in range(36)]
