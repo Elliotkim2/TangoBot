@@ -27,12 +27,24 @@ def close(client):
 def insert(document):
   client = setup()
   db = client["TangoBot"] # Access a database
-  collection = db["Boards"] # Access a collection
+  collection = db["SolvedBoards"] # Access a collection
   result = collection.insert_one(document)
   print("Inserted document ID:", result.inserted_id)
   close(client)
 
+def get():
+  client = setup()
+  db = client['TangoBot']
+  collection = db['Boards']
+  boards = list(collection.find())
+  # for board in boards:
+  #   print(board)
+  close(client)
+  return boards
+
+
 if __name__=="__main__":
-  insert({"a":1,"b":2,"c":3})
+  get()
+  # insert({"a":1,"b":2,"c":3})
   
 

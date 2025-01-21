@@ -5,7 +5,7 @@ import json
 import mongodb
 
 class TangoBoard:
-    def __init__(self, grid, crosses, equals, date):
+    def __init__(self, grid, crosses, equals, date=None):
         self.grid = grid
         self.crosses = crosses
         self.equals = equals
@@ -49,15 +49,7 @@ class TangoBoard:
         return f"TangoBoard(grid={self.grid}"
 
 
-def pairstolist(pairs):
-    a = [[] for _ in range(36)]
-    for i,j in pairs:
-        a[i].append(j)
-        a[j].append(i)
-    return a
-
 def filter(lines):
- 
     # Get current date and time
     now_utc = datetime.datetime.utcnow()
     date = str(now_utc.date())
@@ -69,58 +61,55 @@ def filter(lines):
     crosses = []
 
     additionals = []
-    # this assumes the format of the page doesn't change
+    entry = []
+    new_lines = []
+    copy = False
+    for line in lines:
+        if '<section class="lotka-board' in line:
+            copy = True
+        if '</section>' in line:
+            copy = False
+        if copy:
+            new_lines.append(line)
+    lines = new_lines
+
+
     for i,line in enumerate(lines):
-        match = re.search(r'data-cell-idx', line)
-        match1 = re.search(r'lotka-cell-edge lotka-cell-edge', line)
-        if match:
-            count+=1
-            # print(i, match[0])
-            cells.append(lines[i+5])
-            # print(i+5, lines[i+5])
-            
-        if match1:
-            additionals.append((lines[i],lines[i+1],lines[i-10]))
-    
-    for i, line in enumerate(cells):
-        if "empty" in line:
-            cells[i] = "E"
-        elif "Moon" in line: 
-            cells[i] = "M"
-        elif "Sun" in line:
-            cells[i] = "S"
-
-    for i, line in enumerate(additionals):
-        if "Cross" in line[1]:
-            match = re.search(r'data-cell-idx="(\d+)"', line[2])
-            if match:
-                cell_idx = int(match.group(1))
-            if "right" in line[0]:
-                crosses.append((cell_idx,cell_idx+1))
-            elif "left" in line[0]:
-                crosses.append((cell_idx,cell_idx-1))
-            elif "down" in line[0]:
-                crosses.append((cell_idx,cell_idx+6))
+        if 'data-cell-idx' in line:
+            # cells.append([lines[i+5]])
+            if "empty" in lines[i+5]:
+                cells.append(["E"])
+            elif "Moon" in lines[i+5]: 
+                cells.append(["M"])
+            elif "Sun" in lines[i+5]:
+                cells.append(["S"])
+        if 'lotka-cell-edge--right' in line:
+            if 'Equal' in lines[i+1]:
+                cells[-1].append(("Equal","right"))
             else:
-                crosses.append((cell_idx,cell_idx-6))
-        if "Equal" in line[1]:
-            match = re.search(r'data-cell-idx="(\d+)"', line[2])
-            if match:
-                cell_idx = int(match.group(1))
-            if "right" in line[0]:
-                equals.append((cell_idx,cell_idx+1))
-            elif "left" in line[0]:
-                equals.append((cell_idx,cell_idx-1))
-            elif "down" in line[0]:
-                equals.append((cell_idx,cell_idx+6))
+                cells[-1].append(("Cross","right"))
+        if 'lotka-cell-edge--down' in line:
+            if 'Equal' in lines[i+1]:
+                cells[-1].append(("Equal","down"))
             else:
-                equals.append((cell_idx,cell_idx-6))
+                cells[-1].append(("Cross","down"))
+    # this assumes the format of the page doesn't change  
 
-    crosses = pairstolist(crosses)
-    equals = pairstolist(equals)
-    currentBoard = TangoBoard(cells, crosses, equals, date)
+    grid = []
+    crosses = [[] for _ in range(36)]
+    equals = [[] for _ in range(36)]
+    for i, cell in enumerate(cells):
+        grid.append(cell[0])
+        for edge in cell[1:]:
+            t = i+1 if edge[1] == 'right' else i+6
+            if edge[0] == 'Cross':
+                crosses[i].append(t)
+            else:
+                equals[i].append(t)
 
-    if len(cells) == 36:
-        mongodb.insert(currentBoard.to_dict())
-    else:
-        raise Exception("Error in parsing Board.")
+    currentBoard = TangoBoard(grid, crosses, equals, date)
+    return currentBoard
+    # if len(cells) == 36:
+    #     mongodb.insert(currentBoard.to_dict())
+    # else:
+    #     raise Exception("Error in parsing Board.")
