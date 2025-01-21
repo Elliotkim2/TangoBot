@@ -3,7 +3,7 @@ import board
 
 '''
 moves = [move]
-move = [(x,y),<Sun/Moon>, Reason]
+move = [(n),<Sun/Moon>, Reason]
 
 1.1: Cross
 1.2: Equals
