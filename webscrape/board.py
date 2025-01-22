@@ -104,9 +104,10 @@ def filter(lines):
             t = i+1 if edge[1] == 'right' else i+6
             if edge[0] == 'Cross':
                 crosses[i].append(t)
+                crosses[t].append(i)
             else:
                 equals[i].append(t)
-
+                equals[t].append(i)
     currentBoard = TangoBoard(grid, crosses, equals, date)
     return currentBoard
     # if len(cells) == 36:

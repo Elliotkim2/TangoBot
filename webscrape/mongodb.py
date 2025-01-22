@@ -44,7 +44,19 @@ def get():
 
 
 if __name__=="__main__":
-  get()
+  # get()
+  client = setup()
+  db = client["TangoBot"] # Access a database
+  collection = db["SolvedBoards"] # Access a collection
+  boards = list(collection.find({"date": "2025-01-22"}))
+  board = boards[0]
+  del board['_id']
+  del board['moves']
+  print(board)
+  collection = db["Boards"]
+  result = collection.insert_one(board)
+  print("Inserted document ID:", result.inserted_id)
+  close(client)
   # insert({"a":1,"b":2,"c":3})
   
 

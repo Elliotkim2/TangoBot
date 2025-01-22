@@ -1,5 +1,6 @@
 from board import TangoBoard
 import board
+import mongodb
 
 '''
 moves = [move]
@@ -105,10 +106,12 @@ def solve(board):
     def check_3(n):
       def check_3_helper(n,a,b):
         x,y = n % 6, n // 6
-        ax,ay = x+a%6,y+a//6
-        bx,by = x+b%6,y+b//6
-        a = n + a
-        b = n + b
+        ax,ay = x+a[0],y+a[1]
+        bx,by = x+b[0],y+b[1]
+        a = n + a[0]+a[1]*6
+        b = n + b[0]+b[1]*6
+        if n == 2:
+          print(a,ax,ay,b,bx,by,valid(ax,ay),valid(bx,by))
         if not valid(ax,ay) or not valid(bx,by):
           return False
         if grid[a] != grid[b]:
@@ -117,7 +120,7 @@ def solve(board):
           return False
         return 'M' if grid[a] == 'S' else 'S'
 
-      places_to_check = [(-12,-6,1),(-6,6,2),(6,12,3),(-2,-1,4),(-1,1,5),(1,2,6)]
+      places_to_check = [((0,-2),(0,-1),1),((0,-1),(0,1),2),((0,1),(0,2),3),((-2,0),(-1,0),4),((-1,0),(1,0),5),((1,0),(2,0),6)]
       for a,b,c in places_to_check:
         t = check_3_helper(n,a,b)
         if t == 'M' or t == 'S':
@@ -184,6 +187,8 @@ def solve(board):
         return filtered
 
       def check_same(ps,i):
+        if not ps: 
+          return False
         c = ps[0][i]
         for p in ps:
           if p[i] != c:
@@ -240,7 +245,22 @@ def solve(board):
 # # test 3
 # tango = TangoBoard(["S", "E", "S", "M", "M", "E", "E", "E", "E", "E", "E", "S", "S", "E", "E", "E", "E", "S", "S", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],[[]]*36,[[]]*36)
 if __name__ =="__main__":
-  tango = TangoBoard(["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "S", "M", "E", "E", "E", "E", "M", "S", "M", "S", "E", "E", "E", "E", "S", "M", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],[[], [2, 7], [1, 8], [], [], [], [], [1, 8], [2, 7], [], [], [], [], [], [], [21], [], [], [], [], [21], [15, 20], [], [], [], [], [], [], [], [], [], [], [], [], [], []],[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [15, 20], [14], [], [], [], [], [14], [], [], [], [], [], [], [28, 33], [27, 34], [], [], [], [], [27, 34], [28, 33], []])
-  solve(tango)
+  # tango = TangoBoard(["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "S", "M", "E", "E", "E", "E", "M", "S", "M", "S", "E", "E", "E", "E", "S", "M", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],[[], [2, 7], [1, 8], [], [], [], [], [1, 8], [2, 7], [], [], [], [], [], [], [21], [], [], [], [], [21], [15, 20], [], [], [], [], [], [], [], [], [], [], [], [], [], []],[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [15, 20], [14], [], [], [], [], [14], [], [], [], [], [], [], [28, 33], [27, 34], [], [], [], [], [27, 34], [28, 33], []])
+  # tango = TangoBoard(grid=["E", "E", "E", "S", "E", "S", "E", "E", "E", "E", "M", "E", "E", "E", "E", "E", "E", "S", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"], crosses=[[], [], [], [], [], [], [], [], [], [], [], [], [18], [], [], [], [], [], [12], [20], [19, 26], [], [], [], [25], [24, 31], [20], [], [], [], [], [25], [], [], [], []], equals=[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [15], [14, 21], [], [], [], [], [], [15], [], [], [], [], [], [], [], [], [], [], [33], [32], [], []])
+  boards = mongodb.get()
+  # print(boards)
+  for board in boards:
+    g = board['grid']
+    grid = []
+    for s in g:
+      grid.append(s[:])
+    tango = TangoBoard(grid,board['crosses'], board['equals'], board['date'])
+    solvedGrid, moves = solve(tango)
+    data = tango.to_dict()
+    data['solvedGrid'] = solvedGrid
+    data['moves'] = moves
+    data['grid'] = board['grid']
+    # print(board['grid'])
+    mongodb.insert(data)
   
     
