@@ -33,7 +33,6 @@ def solve(board):
   grid = []
   for cell in board.grid:
     grid.append(cell[:])
-  # print(grid)
   crosses = board.crosses
   equals = board.equals
   sun_cols = [0]*6
@@ -43,7 +42,6 @@ def solve(board):
 
   moves = []
   possible_lines = ['SSMSMM', 'SSMMSM', 'SMSSMM', 'SMSMSM', 'SMSMMS', 'SMMSSM', 'SMMSMS', 'MSSMSM', 'MSSMMS', 'MSMSSM', 'MSMSMS', 'MSMMSS', 'MMSSMS', 'MMSMSS']
-  # possible_lines = ['SSMSMM', 'SSMMSM', 'SMSSMM', 'SMSMSM', 'SMSMMS', 'SMMSSM', 'SMMSMS']
 
   def update_rows_cols(n):
     x,y = n % 6, n // 6
@@ -110,8 +108,6 @@ def solve(board):
         bx,by = x+b[0],y+b[1]
         a = n + a[0]+a[1]*6
         b = n + b[0]+b[1]*6
-        if n == 2:
-          print(a,ax,ay,b,bx,by,valid(ax,ay),valid(bx,by))
         if not valid(ax,ay) or not valid(bx,by):
           return False
         if grid[a] != grid[b]:
@@ -188,6 +184,7 @@ def solve(board):
 
       def check_same(ps,i):
         if not ps: 
+          raise IndexError("No possibilities")
           return False
         c = ps[0][i]
         for p in ps:
@@ -233,17 +230,8 @@ def solve(board):
     if grid[n] == 'E':
       n = -1 if solve_cell(n) else n
     n += 1
-
-  # print(grid)
-  # print(moves)
   return grid, moves
 
-# test 1
-# tango = TangoBoard(["S", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],[[], [2, 7], [1, 8], [], [], [], [], [1, 8], [2, 7], [], [], [], [], [], [], [21], [], [], [], [], [21], [15, 20], [], [], [], [], [], [], [], [], [], [], [], [], [], []],[[1], [0], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []])
-# # test 2
-# tango = TangoBoard(["S", "S", "S", "E", "E", "E", "S", "S", "S", "E", "E", "E", "S", "S", "S", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],[[]]*36,[[]]*36)
-# # test 3
-# tango = TangoBoard(["S", "E", "S", "M", "M", "E", "E", "E", "E", "E", "E", "S", "S", "E", "E", "E", "E", "S", "S", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],[[]]*36,[[]]*36)
 if __name__ =="__main__":
   # tango = TangoBoard(["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "S", "M", "E", "E", "E", "E", "M", "S", "M", "S", "E", "E", "E", "E", "S", "M", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],[[], [2, 7], [1, 8], [], [], [], [], [1, 8], [2, 7], [], [], [], [], [], [], [21], [], [], [], [], [21], [15, 20], [], [], [], [], [], [], [], [], [], [], [], [], [], []],[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [15, 20], [14], [], [], [], [], [14], [], [], [], [], [], [], [28, 33], [27, 34], [], [], [], [], [27, 34], [28, 33], []])
   # tango = TangoBoard(grid=["E", "E", "E", "S", "E", "S", "E", "E", "E", "E", "M", "E", "E", "E", "E", "E", "E", "S", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"], crosses=[[], [], [], [], [], [], [], [], [], [], [], [], [18], [], [], [], [], [], [12], [20], [19, 26], [], [], [], [25], [24, 31], [20], [], [], [], [], [25], [], [], [], []], equals=[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [15], [14, 21], [], [], [], [], [], [15], [], [], [], [], [], [], [], [], [], [], [33], [32], [], []])

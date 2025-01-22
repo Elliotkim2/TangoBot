@@ -2,7 +2,6 @@ import re
 import datetime
 import sys
 import json
-import mongodb
 
 class TangoBoard:
     def __init__(self, grid, crosses, equals, date=None):
@@ -110,7 +109,3 @@ def filter(lines):
                 equals[t].append(i)
     currentBoard = TangoBoard(grid, crosses, equals, date)
     return currentBoard
-    # if len(cells) == 36:
-    #     mongodb.insert(currentBoard.to_dict())
-    # else:
-    #     raise Exception("Error in parsing Board.")

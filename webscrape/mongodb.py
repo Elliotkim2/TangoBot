@@ -24,10 +24,10 @@ def setup():
 def close(client):
   client.close()
 
-def insert(document):
+def insert(document, db_name):
   client = setup()
   db = client["TangoBot"] # Access a database
-  collection = db["SolvedBoards"] # Access a collection
+  collection = db[db_name] # Access a collection
   result = collection.insert_one(document)
   print("Inserted document ID:", result.inserted_id)
   close(client)
@@ -37,26 +37,12 @@ def get():
   db = client['TangoBot']
   collection = db['Boards']
   boards = list(collection.find())
-  # for board in boards:
-  #   print(board)
   close(client)
   return boards
 
 
-if __name__=="__main__":
+# if __name__=="__main__":
   # get()
-  client = setup()
-  db = client["TangoBot"] # Access a database
-  collection = db["SolvedBoards"] # Access a collection
-  boards = list(collection.find({"date": "2025-01-22"}))
-  board = boards[0]
-  del board['_id']
-  del board['moves']
-  print(board)
-  collection = db["Boards"]
-  result = collection.insert_one(board)
-  print("Inserted document ID:", result.inserted_id)
-  close(client)
   # insert({"a":1,"b":2,"c":3})
   
 
