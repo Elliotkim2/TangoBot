@@ -9,6 +9,7 @@ Go to [tangobot.vercel.app](https://tangobot.vercel.app/)
 |     board.py|filters through the HTML and gets necessary info into a "TangoBoard Object"|
 |     solve.py| Has code with notes to solve tango board|
 |     mongodb.py|Has method to insert into mongodb database|
+|     refresh.py|Visits website so next re-renders it|
 
 ## FILE TREE AND DESCRIPTIONS
 ```
