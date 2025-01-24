@@ -5,20 +5,11 @@ import os
 import json
 
 
-# # Insert a document
-# document = {"name": "Alice", "age": 25, "city": "New York"}
-# result = collection.insert_one(document)
-# print("Inserted document ID:", result.inserted_id)
-
-# # Find all documents
-# for doc in collection.find():
-#     print(doc)
-
 def setup():
   load_dotenv() 
   value = os.environ.get("MONGO_URI")
 
-  client = MongoClient(value) # Connect to MongoDB
+  client = MongoClient(value)
   return client
 
 def close(client):
@@ -26,8 +17,8 @@ def close(client):
 
 def insert(document, db_name):
   client = setup()
-  db = client["TangoBot"] # Access a database
-  collection = db[db_name] # Access a collection
+  db = client["TangoBot"]
+  collection = db[db_name]
   result = collection.insert_one(document)
   print("Inserted document ID:", result.inserted_id)
   close(client)
@@ -39,6 +30,15 @@ def get():
   boards = list(collection.find())
   close(client)
   return boards
+
+def delete(date):
+  client = setup()
+  db = client["TangoBot"]
+  collection = db["SolvedBoards"]
+  query = {"date": date}
+  result = collection.delete_many(query)
+  print(f"Deleted {result.deleted_count} document(s)")
+  close(client)
 
 
 # if __name__=="__main__":
