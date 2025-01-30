@@ -97,6 +97,7 @@ def filter(lines):
                 cells[-1].append(("Cross","down"))
     # this assumes the format of the page doesn't change  
     # added fall back for special characters
+    new_types = []
     if types:
         new_types = []
         for type in types:
