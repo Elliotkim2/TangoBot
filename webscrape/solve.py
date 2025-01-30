@@ -33,6 +33,7 @@ def solve(board):
   grid = []
   for cell in board.grid:
     grid.append(cell[:])
+  print(len(grid))
   crosses = board.crosses
   equals = board.equals
   sun_cols = [0]*6

@@ -72,7 +72,7 @@ def filter(lines):
             new_lines.append(line)
     lines = new_lines
 
-
+    types = []
     for i,line in enumerate(lines):
         if 'data-cell-idx' in line:
             # cells.append([lines[i+5]])
@@ -82,6 +82,9 @@ def filter(lines):
                 cells.append(["M"])
             elif "Sun" in lines[i+5]:
                 cells.append(["S"])
+            else:
+                types.append(lines[i+9][:100])
+                cells.append([lines[i+9][:100]])
         if 'lotka-cell-edge--right' in line:
             if 'Equal' in lines[i+1]:
                 cells[-1].append(("Equal","right"))
@@ -93,6 +96,21 @@ def filter(lines):
             else:
                 cells[-1].append(("Cross","down"))
     # this assumes the format of the page doesn't change  
+    # added fall back for special characters
+    if types:
+        new_types = []
+        for type in types:
+            if type not in new_types:
+                new_types.append(type)
+    types = new_types
+
+    def transform(a):
+        if a == 'E':
+            return 'E'
+        if a == types[0]:
+            return 'M'
+        return 'S'
+    
 
     grid = []
     crosses = [[] for _ in range(36)]
@@ -107,5 +125,7 @@ def filter(lines):
             else:
                 equals[i].append(t)
                 equals[t].append(i)
+    if types:
+        grid = list(map(transform,grid))
     currentBoard = TangoBoard(grid, crosses, equals, date)
     return currentBoard
