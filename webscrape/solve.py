@@ -33,7 +33,6 @@ def solve(board):
   grid = []
   for cell in board.grid:
     grid.append(cell[:])
-  print(len(grid))
   crosses = board.crosses
   equals = board.equals
   sun_cols = [0]*6
@@ -215,20 +214,20 @@ def solve(board):
         return True
       return False
 
-    if check_1(n):
+    if n // 36 == 0 and check_1(n%36):
       return True
-    if check_2(n):
+    if n // 36 == 1 and check_2(n%36):
       return True
-    if check_3(n):
+    if n // 36 == 2 and check_3(n%36):
       return True
-    if check_4(n):
+    if n // 36 == 3 and check_4(n%36):
       return True
   
     
   set_rows_cols()
   n = 0
-  while n < 36:
-    if grid[n] == 'E':
+  while n < (36*4):
+    if grid[n%36] == 'E':
       n = -1 if solve_cell(n) else n
     n += 1
   return grid, moves
