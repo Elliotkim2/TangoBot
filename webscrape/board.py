@@ -63,14 +63,14 @@ def filter(lines):
     entry = []
     new_lines = []
     copy = False
-    for line in lines:
-        if '<section class="lotka-board' in line:
-            copy = True
-        if '</section>' in line:
-            copy = False
-        if copy:
-            new_lines.append(line)
-    lines = new_lines
+    # for line in lines:
+    #     if '<section class="lotka-board' in line:
+    #         copy = True
+    #     if '</section>' in line:
+    #         copy = False
+    #     if copy:
+    #         new_lines.append(line)
+    # lines = new_lines
 
     types = []
     for i,line in enumerate(lines):
